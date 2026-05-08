@@ -34,3 +34,13 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# agent runtime/state
+.sisyphus/
+
+# local SSH material (defense-in-depth)
+*.key
+id_rsa
+id_rsa.pub
+id_ed25519
+id_ed25519.pub
