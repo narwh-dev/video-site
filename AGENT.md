@@ -2,13 +2,15 @@
 
 ## Project Goal
 
-Build a Cloudflare-first Star Trek video catalog and playback site for `video.startrekchina.org`. The MVP should provide public catalog browsing, search, detail pages, authorized playback, user features, an admin backend, and persisted danmaku.
+Build a Cloudflare-native Star Trek video catalog and playback site for `video.startrekchina.org`. The project goal is to host and operate the site entirely within the Cloudflare ecosystem: runtime, data, storage, access control, preview/production deployment, and edge delivery should all use Cloudflare services wherever practical.
 
-This repository is still at the planning/scaffold stage. At the time this guide was created, the root contains only the basic repository files and Sisyphus planning state. Treat the detailed implementation plan as the source of truth before making architecture changes.
+The MVP should provide public catalog browsing, search, detail pages, authorized playback, user features, an admin backend, and persisted danmaku.
+
+This repository is still at the planning/scaffold stage. At the time this guide was updated, the root contains only the basic repository files and project guidance. Keep changes small and architecture-focused until the app scaffold exists.
 
 ## Detailed Plan Pointer
 
-Read `.sisyphus/plans/star-trek-video-site-architecture.md` for the full implementation plan, task order, schema notes, testing expectations, and review history. This guide is a practical summary for cloud and remote collaboration, not a replacement for the plan.
+If `.sisyphus/plans/star-trek-video-site-architecture.md` is added later, read it before changing architecture or task order. Until then, treat this guide and `README.md` as the working project direction.
 
 ## Chosen Stack
 
@@ -16,15 +18,18 @@ Read `.sisyphus/plans/star-trek-video-site-architecture.md` for the full impleme
 - Styling and UI: Tailwind CSS with shadcn/ui, following a clean minimalist interface.
 - Runtime target: Cloudflare Workers through `@opennextjs/cloudflare`.
 - Primary SSR target: Workers, not Cloudflare Pages.
+- Deployment target: Cloudflare Workers environments for preview and production.
 - Testing baseline: typecheck, lint, Vitest, Playwright E2E, and CI.
 
 ## Cloudflare Architecture
 
-- Use separate preview and production Cloudflare environments.
+- Keep the application fully Cloudflare-first; do not introduce a non-Cloudflare hosting, database, object storage, CDN, or admin-gating dependency unless the project direction is explicitly revised.
+- Use separate preview and production Cloudflare Workers environments.
 - Run the full-stack Next.js app on Cloudflare Workers via OpenNext.
 - Use D1 for relational application data.
 - Use R2 for private media objects.
 - Use Cloudflare Access to gate `/admin` and admin API routes.
+- Use Cloudflare edge delivery and Worker routes for playback resolution and private media proxying.
 - Keep real Cloudflare account IDs, tokens, source URLs, and secrets out of the repository.
 
 ## Auth And Authorization Model
@@ -40,6 +45,7 @@ Read `.sisyphus/plans/star-trek-video-site-architecture.md` for the full impleme
 - D1 stores catalog metadata for series, seasons, episodes, movies, sources, subtitles, users, favorites, watch history, persisted danmaku, moderation state, and admin audit data.
 - R2 stores private media objects that must not be exposed as raw private URLs in client payloads.
 - Source records should distinguish provider type and access behavior, including `public_url`, `r2`, `rustfs`, and `openlist`.
+- Prefer Cloudflare-native storage and data services for new application capabilities. Avoid adding external databases, object stores, queues, or media delivery services for MVP work.
 - Content entry is manual admin CRUD for the MVP. Do not add external metadata scraping or sync unless a later plan explicitly adds it.
 
 ## Playback And Player Model
@@ -81,8 +87,9 @@ Read `.sisyphus/plans/star-trek-video-site-architecture.md` for the full impleme
 
 ## Collaboration Guardrails
 
-- Start from the plan file before changing architecture or task order.
+- Start from this guide and `README.md`; if a detailed plan file exists later, read it before changing architecture or task order.
 - Keep this repository free of secrets, tokens, private source URLs, and real Cloudflare IDs.
+- Keep the MVP fully hosted on Cloudflare services unless the project direction is explicitly revised.
 - Do not broaden the MVP beyond the stated exclusions without updating the plan through the orchestrator.
 - Prefer small, reviewable changes with verification notes.
 - Preserve the Cloudflare Workers plus OpenNext runtime choice unless the plan is formally revised.
