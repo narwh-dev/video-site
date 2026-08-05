@@ -15,7 +15,7 @@ If `.sisyphus/plans/star-trek-video-site-architecture.md` is added later, read i
 ## Chosen Stack
 
 - App framework: Next.js with TypeScript.
-- Styling and UI: Tailwind CSS with shadcn/ui, following a clean minimalist interface.
+- Styling and UI: Tailwind CSS with coss ui as the default component library (based on Base UI), following a clean minimalist interface. Local docs: `docs/coss-ui/README.md`.
 - Runtime target: Cloudflare Workers through `@opennextjs/cloudflare`.
 - Primary SSR target: Workers, not Cloudflare Pages.
 - Deployment target: Cloudflare Workers environments for preview and production.
