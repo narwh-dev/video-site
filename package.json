@@ -5,10 +5,12 @@
   "scripts": {
     "dev": "react-router dev",
     "build": "react-router build",
+    "build:preview": "CLOUDFLARE_ENV=preview react-router build",
     "typecheck": "react-router typegen && tsc --noEmit",
     "lint": "eslint .",
     "test": "vitest run",
     "preview": "vite preview",
+    "deploy:preview": "CLOUDFLARE_ENV=preview wrangler deploy",
     "deploy:dry": "npm run build && wrangler deploy --dry-run"
   },
   "dependencies": {

@@ -7,5 +7,13 @@
   "observability": {
     "enabled": true,
     "logs": { "head_sampling_rate": 1 }
+  },
+  "env": {
+    "preview": {
+      "name": "star-trek-china-video-preview"
+    },
+    "production": {
+      "name": "star-trek-china-video"
+    }
   }
 }
