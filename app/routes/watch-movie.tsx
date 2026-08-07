@@ -2,9 +2,15 @@ import { ArrowLeft, Bookmark, Pause, Play, RotateCcw } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router";
 import type { Route } from "./+types/watch-movie";
+import { DanmakuSettings } from "../components/danmaku-settings";
 import { MediaGrid } from "../components/media";
 import { PrototypeLink } from "../components/prototype-link";
 import { PageSkeleton, PageState } from "../components/states";
+import {
+  danmakuLayerStyle,
+  defaultDanmakuSettings,
+  type DanmakuSettingsState,
+} from "../lib/danmaku-settings";
 import { danmakuForState } from "../data/danmaku";
 import { MEDIA_BASE, defaultQualityUrl, qualityOptions, subtitleOptions } from "../data/media-fixtures";
 import { parsePlayerStateParam, resolvePlayerState } from "../lib/player-state";
@@ -60,6 +66,7 @@ export default function WatchMoviePage({ loaderData }: Route.ComponentProps) {
   const [danmakuStatus, setDanmakuStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
   const [localPreview, setLocalPreview] = useState<string | null>(null);
   const [danmakuEnabled, setDanmakuEnabled] = useState(playerState !== "no-danmaku");
+  const [danmakuSettings, setDanmakuSettings] = useState<DanmakuSettingsState>(defaultDanmakuSettings);
   const composingRef = useRef(false);
   const related = useMemo(() => relatedForMovie(content), [content]);
   const publicDanmaku = useMemo(
@@ -237,7 +244,7 @@ export default function WatchMoviePage({ loaderData }: Route.ComponentProps) {
                 ) : null}
                 {showBuffering ? <div className="watch-spinner" aria-live="polite" aria-label="正在缓冲" /> : null}
                 {danmakuEnabled ? (
-                  <div className="watch-danmaku-layer" aria-hidden="true">
+                  <div className="watch-danmaku-layer" aria-hidden="true" style={danmakuLayerStyle(danmakuSettings)}>
                     {visibleDanmaku.map((item, index) => (
                       <span key={`${item.text}-${index}`} className="watch-danmaku-item" style={{ color: item.color, top: `${12 + (index % 5) * 18}%` }}>
                         {item.text}
@@ -321,6 +328,12 @@ export default function WatchMoviePage({ loaderData }: Route.ComponentProps) {
             >
               弹幕
             </button>
+            <DanmakuSettings
+              enabled={danmakuEnabled}
+              onEnabledChange={setDanmakuEnabled}
+              settings={danmakuSettings}
+              onChange={setDanmakuSettings}
+            />
             <button
               className="icon-button dark"
               type="button"

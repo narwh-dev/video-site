@@ -54,7 +54,10 @@ export function MediaCard({ item, imageFailed = false }: { item: CatalogItem; im
         <div className="media-card-copy">
           <h3>{item.title}</h3>
           <p>{item.originalTitle || meta}</p>
-          <p className="media-meta">{meta}{!item.playable ? " · 暂不可播放" : ""}</p>
+          <p className="media-meta">{meta}</p>
+          <p className="media-availability" aria-hidden={!item.playable ? undefined : true}>
+            {!item.playable ? "暂不可播放" : null}
+          </p>
         </div>
       </PrototypeLink>
       {persona === "guest" ? <PrototypeLink className="icon-button favorite-button" to={favoriteHref} aria-label={`登录后收藏${item.title}`} title="登录后收藏">
