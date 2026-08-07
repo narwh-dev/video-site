@@ -1,17 +1,34 @@
 import { describe, expect, it } from "vitest";
 import {
+  applyDanmakuStatus,
+  countDanmakuByStatus,
+  deleteDanmakuByIds,
   filterAndSortCatalogItems,
+  httpsUrlError,
+  objectPathError,
   parseAdminStateParam,
   parseCatalogListQuery,
   removeAdminItemById,
+  resolveDanmakuAdminState,
   resolveFormAdminState,
   resolveListAdminState,
+  subtitleDefaultConflictError,
   validateEpisodeForm,
   validateMovieForm,
   validateSeasonForm,
   validateSeriesForm,
+  validateSourceForm,
+  validateSubtitleForm,
 } from "./admin";
-import { adminMovies, adminSeries, pendingDanmaku, recentActions } from "../data/admin";
+import {
+  adminDanmaku,
+  adminMovies,
+  adminSeries,
+  adminSources,
+  adminSubtitles,
+  pendingDanmaku,
+  recentActions,
+} from "../data/admin";
 
 describe("parseAdminStateParam", () => {
   it("reads first valid adminState", () => {
@@ -141,5 +158,102 @@ describe("admin seed data", () => {
     expect(pendingDanmaku).toHaveLength(8);
     expect(recentActions.length).toBeGreaterThanOrEqual(6);
     expect(pendingDanmaku[0]?.id).toBe("pd-1");
+    expect(adminSources.length).toBeGreaterThanOrEqual(10);
+    expect(new Set(adminSources.map((item) => item.provider)).size).toBe(4);
+    expect(adminSubtitles.length).toBeGreaterThanOrEqual(8);
+    expect(adminDanmaku).toHaveLength(18);
+    expect(countDanmakuByStatus(adminDanmaku)).toEqual({ pending: 8, approved: 6, hidden: 4 });
+  });
+});
+
+describe("source validators", () => {
+  it("requires https prefix for public urls and object path for r2", () => {
+    expect(httpsUrlError("")).toBe("此字段为必填项");
+    expect(httpsUrlError("http://example.com/a.mp4")).toBe("URL 必须以 https:// 开头");
+    expect(httpsUrlError("https://example.com/a.mp4")).toBeNull();
+    expect(objectPathError("")).toBe("对象路径不能为空");
+    expect(objectPathError("  ")).toBe("对象路径不能为空");
+    expect(objectPathError("movies/a.mp4")).toBeNull();
+
+    expect(validateSourceForm({
+      relatedKey: "",
+      provider: "public_url",
+      label: "",
+      quality: "1080p",
+      enabled: true,
+      url: "http://x",
+      objectPath: "",
+      resourceUrl: "",
+    })).toEqual({
+      relatedKey: "此字段为必填项",
+      label: "此字段为必填项",
+      url: "URL 必须以 https:// 开头",
+      objectPath: null,
+      resourceUrl: null,
+    });
+
+    expect(validateSourceForm({
+      relatedKey: "movie:first-contact",
+      provider: "r2",
+      label: "主源",
+      quality: "720p",
+      enabled: true,
+      url: "",
+      objectPath: "",
+      resourceUrl: "",
+    }).objectPath).toBe("对象路径不能为空");
+  });
+});
+
+describe("subtitle default conflict", () => {
+  it("blocks a second default subtitle for the same content", () => {
+    expect(subtitleDefaultConflictError(
+      { relatedKey: "episode:strange-new-worlds-2-4", isDefault: true },
+      adminSubtitles,
+    )).toMatch(/只能有一个默认字幕/);
+
+    expect(subtitleDefaultConflictError(
+      { relatedKey: "episode:strange-new-worlds-2-4", isDefault: true },
+      adminSubtitles,
+      "sub-1",
+    )).toBeNull();
+
+    const errors = validateSubtitleForm(
+      {
+        relatedKey: "episode:strange-new-worlds-2-4",
+        language: "en",
+        label: "English",
+        isDefault: true,
+        enabled: true,
+        fileName: "x.vtt",
+        fileSize: 10,
+        fileStatus: "success",
+      },
+      adminSubtitles,
+    );
+    expect(errors.isDefault).toMatch(/只能有一个默认字幕/);
+  });
+});
+
+describe("danmaku status and bulk operations", () => {
+  it("counts statuses and applies bulk approve/hide/delete", () => {
+    expect(resolveDanmakuAdminState("default", "?adminState=selected")).toBe("selected");
+    expect(resolveDanmakuAdminState("default", "?adminState=dirty")).toBe("default");
+
+    const sample = [
+      { id: "1", status: "pending" as const },
+      { id: "2", status: "pending" as const },
+      { id: "3", status: "approved" as const },
+      { id: "4", status: "hidden" as const },
+    ];
+    expect(countDanmakuByStatus(sample)).toEqual({ pending: 2, approved: 1, hidden: 1 });
+
+    const approved = applyDanmakuStatus(sample, ["1", "2"], "approved");
+    expect(countDanmakuByStatus(approved)).toEqual({ pending: 0, approved: 3, hidden: 1 });
+
+    const hidden = applyDanmakuStatus(sample, new Set(["1"]), "hidden");
+    expect(hidden.find((item) => item.id === "1")?.status).toBe("hidden");
+
+    expect(deleteDanmakuByIds(sample, ["1", "4"]).map((item) => item.id)).toEqual(["2", "3"]);
   });
 });

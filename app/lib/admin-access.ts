@@ -1,6 +1,7 @@
 import { getPrototypeState, type Persona, type Scenario } from "./prototype";
 import {
   parseCatalogListQuery,
+  resolveDanmakuAdminState,
   resolveFormAdminState,
   resolveListAdminState,
   type AdminState,
@@ -45,5 +46,16 @@ export function loadAdminForm(request: Request): AdminLoaderBase & {
   return {
     ...base,
     adminState: resolveFormAdminState(base.scenario, url.search),
+  };
+}
+
+export function loadAdminDanmaku(request: Request): AdminLoaderBase & {
+  adminState: AdminState;
+} {
+  const base = loadAdminBase(request);
+  const url = new URL(request.url);
+  return {
+    ...base,
+    adminState: resolveDanmakuAdminState(base.scenario, url.search),
   };
 }

@@ -664,4 +664,73 @@ select { min-height: 44px; border: 1px solid var(--hairline); border-radius: 8px
   .admin-entity-summary { flex-direction: column; }
   .admin-user-trigger span { display: none; }
   .admin-form { padding: 16px; }
+  .admin-danmaku-stats { grid-template-columns: 1fr; }
+  .admin-drawer { inset: 0; width: 100%; max-width: none; border-radius: 0; }
+}
+
+.admin-row-sub { display: block; margin-top: 2px; color: var(--muted); font-size: 12px; font-weight: 500; }
+.admin-check-row { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; color: var(--body); font-size: 14px; font-weight: 500; }
+.admin-check-row input { width: 18px; height: 18px; }
+.admin-file-field { display: grid; gap: 12px; padding: 16px; border: 1px dashed var(--hairline); border-radius: 8px; background: var(--surface-soft); }
+.admin-file-meta { display: grid; gap: 4px; }
+.admin-file-meta strong { color: var(--ink); }
+.admin-file-meta span { color: var(--muted); font-size: 13px; }
+.admin-summary-card.static { pointer-events: none; }
+.admin-summary-card.static:hover { border-color: var(--hairline); }
+.admin-danmaku-stats { grid-template-columns: repeat(3, minmax(0, 1fr)); margin-bottom: 16px; }
+.admin-danmaku-layout { display: grid; grid-template-columns: minmax(0, 1fr) 360px; gap: 16px; align-items: start; }
+.admin-danmaku-side { border: 1px solid var(--hairline); border-radius: 12px; background: white; overflow: hidden; }
+.admin-danmaku-side .admin-empty { border: 0; border-radius: 0; }
+.admin-danmaku-preview { display: grid; gap: 16px; padding: 16px; }
+.admin-danmaku-frame {
+  aspect-ratio: 16 / 9;
+  display: grid;
+  place-content: center;
+  gap: 6px;
+  border-radius: 8px;
+  background: #111111;
+  color: white;
+  text-align: center;
+}
+.admin-danmaku-frame span { color: rgb(255 255 255 / .72); font-size: 12px; }
+.admin-danmaku-frame strong { font-size: 16px; }
+.admin-danmaku-side-actions { padding: 0 16px 16px; flex-wrap: wrap; }
+.admin-danmaku-table tr { cursor: pointer; }
+.admin-danmaku-table tr.is-active td { background: var(--surface-soft); }
+.admin-danmaku-table .col-check { width: 48px; }
+.admin-detail-list { display: grid; gap: 12px; margin: 0; padding: 16px; }
+.admin-detail-list > div { display: grid; gap: 4px; padding-bottom: 12px; border-bottom: 1px solid var(--hairline); }
+.admin-detail-list > div:last-child { border-bottom: 0; padding-bottom: 0; }
+.admin-detail-list dt { color: var(--muted); font-size: 12px; font-weight: 700; }
+.admin-detail-list dd { margin: 0; color: var(--ink); font-size: 14px; word-break: break-word; }
+.admin-row-clickable { cursor: pointer; }
+.admin-row-clickable:hover td, .admin-row-clickable:focus-visible td { background: var(--surface-soft); }
+.admin-drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 90;
+  width: min(420px, 100vw);
+  overflow-y: auto;
+  background: white;
+  box-shadow: -16px 0 48px rgb(0 0 0 / .16);
+}
+.admin-drawer .sheet-header { padding: 16px; border-bottom: 1px solid var(--hairline); }
+.admin-drawer-backdrop { z-index: 85; }
+
+@media (max-width: 1279px) {
+  .admin-table .col-low { display: none; }
+  .admin-danmaku-layout { grid-template-columns: 1fr; }
+  .admin-danmaku-side { display: none; }
+}
+
+@media (max-width: 1023px) {
+  .admin-table .col-low { display: flex; }
+  .admin-danmaku-table tr { cursor: pointer; }
+}
+
+@media (max-width: 767px) {
+  .admin-danmaku-stats { grid-template-columns: 1fr; }
+  .admin-drawer { inset: 0; width: 100%; max-width: none; border-radius: 0; }
 }
