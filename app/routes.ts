@@ -10,8 +10,8 @@ export default [
   route("search", "routes/search.tsx"),
   route("watch/episode/:id", "routes/watch-episode.tsx"),
   route("watch/movie/:id", "routes/watch-movie.tsx"),
-  route("login", "routes/placeholder.tsx", { id: "login-placeholder" }),
-  route("favorites", "routes/placeholder.tsx", { id: "favorites-placeholder" }),
-  route("history", "routes/placeholder.tsx", { id: "history-placeholder" }),
+  route("login", "routes/login.tsx"),
+  route("favorites", "routes/favorites.tsx"),
+  route("history", "routes/history.tsx"),
   route("*", "routes/not-found.tsx"),
 ] satisfies RouteConfig;

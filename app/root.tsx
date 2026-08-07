@@ -37,12 +37,14 @@ export function Layout({ children }: { children: React.ReactNode }) {
 export default function App() {
   const location = useLocation();
   const isWatch = location.pathname.startsWith("/watch/");
+  const isAuth = location.pathname === "/login";
+  const hideChrome = isWatch || isAuth;
   return (
     <>
       <a className="skip-link" href="#main-content">跳到主要内容</a>
-      {isWatch ? null : <SiteHeader />}
+      {hideChrome ? null : <SiteHeader />}
       <main id="main-content" tabIndex={-1}><Outlet /></main>
-      {isWatch ? null : <SiteFooter />}
+      {hideChrome ? null : <SiteFooter />}
     </>
   );
 }

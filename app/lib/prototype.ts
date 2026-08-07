@@ -1,5 +1,5 @@
 export const personas = ["guest", "user", "admin"] as const;
-export const scenarios = ["default", "loading", "empty", "error", "long-copy", "image-failed"] as const;
+export const scenarios = ["default", "loading", "empty", "error", "long-copy", "image-failed", "forbidden"] as const;
 
 export type Persona = (typeof personas)[number];
 export type Scenario = (typeof scenarios)[number];
