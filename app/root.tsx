@@ -38,7 +38,8 @@ export default function App() {
   const location = useLocation();
   const isWatch = location.pathname.startsWith("/watch/");
   const isAuth = location.pathname === "/login";
-  const hideChrome = isWatch || isAuth;
+  const isAdmin = location.pathname === "/admin" || location.pathname.startsWith("/admin/");
+  const hideChrome = isWatch || isAuth || isAdmin;
   return (
     <>
       <a className="skip-link" href="#main-content">跳到主要内容</a>
