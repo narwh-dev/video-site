@@ -5,6 +5,7 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  useLocation,
 } from "react-router";
 import type { Route } from "./+types/root";
 import { SiteFooter, SiteHeader } from "./components/site-shell";
@@ -34,12 +35,14 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
+  const location = useLocation();
+  const isWatch = location.pathname.startsWith("/watch/");
   return (
     <>
       <a className="skip-link" href="#main-content">跳到主要内容</a>
-      <SiteHeader />
+      {isWatch ? null : <SiteHeader />}
       <main id="main-content" tabIndex={-1}><Outlet /></main>
-      <SiteFooter />
+      {isWatch ? null : <SiteFooter />}
     </>
   );
 }

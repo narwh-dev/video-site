@@ -310,3 +310,144 @@ select { min-height: 44px; border: 1px solid var(--hairline); border-radius: 8px
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
   .media-card .title-card { transform: none !important; }
 }
+
+/* ========== P2 Watch Path ========== */
+.watch-page { min-height: 100vh; background: var(--canvas); color: var(--body); }
+.watch-topbar {
+  position: sticky; top: 0; z-index: 60; min-height: 56px;
+  display: grid; grid-template-columns: 44px minmax(0, 1fr) auto; align-items: center; gap: 12px;
+  padding: 8px 16px; background: var(--dark); color: white; border-bottom: 1px solid #2a2a2a;
+}
+.watch-topbar h1 { margin: 0; color: white; font-size: 16px; line-height: 1.3; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.watch-topbar .eyebrow { margin: 0 0 2px; color: #a1a1aa; }
+.watch-topbar .button.secondary, .watch-topbar .icon-button.dark { color: white; border-color: #3f3f46; background: #1a1a1a; }
+.watch-topbar .button.secondary.selected { background: white; color: var(--ink); border-color: white; }
+.watch-shell {
+  width: min(100% - 32px, 1440px); margin: 0 auto; padding: 16px 0 32px;
+  display: grid; grid-template-columns: minmax(0, 1fr) 336px; gap: 16px; align-items: stretch;
+  background: transparent;
+}
+.watch-shell.movie-shell { grid-template-columns: minmax(0, 1fr); max-width: 1200px; }
+.watch-main { min-width: 0; display: grid; gap: 12px; }
+.watch-player-frame {
+  position: relative; aspect-ratio: 16 / 9; overflow: hidden; border-radius: 8px;
+  background: #101010; color: white;
+}
+.watch-player-frame.failed { display: grid; place-items: center; }
+.watch-video { width: 100%; height: 100%; display: block; background: #000; object-fit: contain; }
+.watch-play-overlay, .watch-error-layer, .watch-ended-layer {
+  position: absolute; inset: 0; display: grid; place-items: center; gap: 12px;
+  background: rgb(0 0 0 / .55); color: white; text-align: center; padding: 24px;
+}
+.watch-play-overlay {
+  width: 72px; height: 72px; margin: auto; border: 0; border-radius: 999px;
+  background: white; color: var(--ink); cursor: pointer;
+}
+.watch-error-layer h2, .watch-ended-layer p { color: white; margin: 0; }
+.watch-spinner {
+  position: absolute; inset: 0; margin: auto; width: 40px; height: 40px;
+  border: 3px solid rgb(255 255 255 / .25); border-top-color: white; border-radius: 50%;
+  animation: watch-spin 0.8s linear infinite;
+}
+@keyframes watch-spin { to { transform: rotate(360deg); } }
+.watch-danmaku-layer { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+.watch-danmaku-item {
+  position: absolute; left: 100%; white-space: nowrap; font-size: 16px; font-weight: 600;
+  text-shadow: 0 1px 2px rgb(0 0 0 / .8); animation: danmaku-move 8s linear forwards;
+}
+.watch-danmaku-item.local { color: #93c5fd; border: 1px solid #93c5fd; padding: 2px 8px; border-radius: 4px; }
+@keyframes danmaku-move { from { transform: translateX(0); } to { transform: translateX(calc(-100vw - 100%)); } }
+.watch-controls {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 10px 12px;
+  border-radius: 8px; background: #1a1a1a; color: white;
+}
+.watch-controls .icon-button.dark { min-width: 44px; color: white; border-color: #3f3f46; background: #101010; }
+.watch-controls .icon-button.dark.selected { background: white; color: var(--ink); }
+.watch-progress { flex: 1 1 180px; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px; align-items: center; color: #d4d4d8; font-size: 12px; }
+.watch-progress input[type="range"] { width: 100%; accent-color: #3b82f6; }
+.watch-select select {
+  min-height: 44px; border-color: #3f3f46; background: #101010; color: white;
+}
+.danmaku-composer {
+  display: flex; flex-wrap: wrap; gap: 8px; align-items: center; padding: 12px;
+  border-radius: 8px; background: #1a1a1a;
+}
+.danmaku-composer input {
+  min-width: 0; flex: 1 1 220px; min-height: 44px; border: 1px solid #3f3f46;
+  border-radius: 8px; padding: 0 12px; background: #101010; color: white; font-size: 14px;
+}
+.danmaku-live { width: 100%; margin: 0; min-height: 20px; color: #a1a1aa; font-size: 13px; }
+.watch-toast {
+  margin: 0; padding: 10px 14px; border-radius: 8px; background: #111827; color: white; font-size: 14px;
+}
+.watch-resume-actions { margin-top: 4px; }
+.watch-meta {
+  padding: 20px; border-radius: 8px; background: white; border: 1px solid var(--hairline);
+}
+.watch-meta h2 { margin-bottom: 8px; }
+.episode-panel {
+  display: flex; flex-direction: column; min-height: 0; border-radius: 8px;
+  background: #1a1a1a; color: white; overflow: hidden;
+}
+.episode-panel-head {
+  display: flex; align-items: baseline; justify-content: space-between; gap: 12px;
+  padding: 14px 16px; border-bottom: 1px solid #2a2a2a;
+}
+.episode-panel-head h2 { margin: 0; color: white; font-size: 18px; }
+.episode-panel-head p { margin: 0; color: #a1a1aa; font-size: 13px; }
+.episode-panel-list { flex: 1; overflow-y: auto; padding: 8px; display: grid; gap: 4px; align-content: start; }
+.episode-panel-item {
+  display: grid; gap: 2px; min-height: 72px; padding: 10px 12px; border-radius: 8px;
+  color: #e4e4e7; text-align: left;
+}
+.episode-panel-item strong { color: white; font-size: 14px; overflow-wrap: anywhere; }
+.episode-panel-item span:last-child { color: #a1a1aa; font-size: 12px; }
+.episode-panel-item .eyebrow { color: #a1a1aa; margin-bottom: 2px; }
+.episode-panel-item.current { background: #27272a; outline: 1px solid #3b82f6; }
+.episode-panel-item.unavailable { opacity: .55; }
+.episode-panel-item:hover, .episode-panel-item:focus-visible { background: #27272a; }
+.watch-recommendations { background: white; padding-top: 48px; padding-bottom: 96px; }
+.episode-drawer-trigger { display: none; }
+
+@media (max-width: 1279px) {
+  .watch-shell { grid-template-columns: minmax(0, 1fr); }
+  .episode-panel {
+    position: relative; max-height: 360px;
+  }
+  .episode-drawer-trigger { display: inline-flex; }
+}
+
+@media (max-width: 767px) {
+  .watch-topbar { padding-inline: 12px; }
+  .watch-topbar h1 { font-size: 14px; }
+  .watch-favorite span, .watch-favorite { font-size: 13px; }
+  .watch-shell { width: 100%; padding: 0 0 24px; gap: 0; }
+  .watch-player-frame { border-radius: 0; }
+  .watch-controls, .danmaku-composer, .watch-meta, .watch-resume-actions, .watch-toast {
+    margin-inline: 16px;
+  }
+  .watch-controls { gap: 6px; }
+  .episode-panel { margin: 16px; max-height: 320px; }
+}
+
+/* Landscape phone watch: hide topbar, center 16:9 */
+@media (orientation: landscape) and (max-height: 500px) {
+  .watch-page { background: var(--dark); }
+  .watch-topbar { display: none; }
+  .watch-shell { width: 100%; max-width: none; padding: 0; min-height: 100vh; align-items: center; }
+  .watch-main { min-height: 100vh; display: grid; align-content: center; }
+  .watch-player-frame {
+    width: min(100vw, calc(100vh * 16 / 9));
+    margin-inline: auto;
+    max-height: 100vh;
+    border-radius: 0;
+  }
+  .watch-controls, .danmaku-composer, .watch-meta, .watch-resume-actions, .episode-panel, .watch-recommendations, .watch-toast {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .watch-danmaku-item { animation: none; left: 8%; opacity: .85; }
+  .watch-spinner { animation: none; border-top-color: transparent; }
+}
