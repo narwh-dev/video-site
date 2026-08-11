@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1260" height="540" viewBox="0 0 1260 540">
+  <rect width="1260" height="540" fill="#3B82F6"/>
+  <rect x="151" y="65" width="958" height="410" fill="none" stroke="#ffffff" stroke-opacity="0.35" stroke-width="2"/>
+  <text x="151" y="87" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="22" fill="#ffffff" font-weight="500">DIS</text>
+  <text x="151" y="452.2" font-family="system-ui, -apple-system, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif" font-size="24" fill="#ffffff" font-weight="700"><tspan x="151" dy="0">星际迷航：发现号</tspan></text>
+  <text x="151" y="475" font-family="system-ui, -apple-system, 'PingFang SC', sans-serif" font-size="16" fill="#ffffff" opacity="0.85">Star Trek: Discovery</text>
+</svg>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360">
+  <rect width="640" height="360" fill="#111111"/>
+  <rect x="77" y="43" width="486" height="274" fill="none" stroke="#ffffff" stroke-opacity="0.35" stroke-width="2"/>
+  <text x="77" y="57" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="14" fill="#ffffff" font-weight="500">S01E01</text>
+  <text x="77" y="295.4" font-family="system-ui, -apple-system, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif" font-size="16" fill="#ffffff" font-weight="700"><tspan x="77" dy="0">星际迷航：原初系列</tspan></text>
+  <text x="77" y="317" font-family="system-ui, -apple-system, 'PingFang SC', sans-serif" font-size="12" fill="#ffffff" opacity="0.85">Star Trek: The Original Series · S01E01</text>
+</svg>
